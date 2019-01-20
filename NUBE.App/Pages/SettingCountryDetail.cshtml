@@ -1,0 +1,148 @@
+﻿@inject ICountryRepository Country
+
+@{
+    int i = 1;
+    var lst = Country.Find(x => String.IsNullOrWhiteSpace(SearchText) || x.Name.ToLower().Contains(SearchText.ToLower())).ToList();
+}
+<div class="container">
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" bind="@SearchText" placeholder="Search" />
+        <div class="input-group-append">
+            <button class="btn btn-success" type="submit">Go</button>
+        </div>
+    </div>
+
+    <div class="d-flex bg-info">
+        <div class="p-2 border text-light" style="width:50px">SNo</div>
+        <div class="p-2 flex-grow-1 border border-left-0 text-light">
+            Country <span class="badge badge-light">@lst.Count()</span>
+            <button class="btn btn-light text-info float-right btn-sm" onclick="@NewCountry">
+                <span class="oi oi-plus " aria-hidden="true"></span> NEW
+            </button>
+        </div>
+    </div>
+    <div style="height:250px;overflow:auto" class="border">
+        @{
+
+            foreach (var d in lst)
+            {
+                <div class="d-flex @( i%2==0? "bg-light" : "")">
+                    <div class="p-2 border text-right" style="width:50px">@(i++)</div>
+                    <div class="p-2 flex-grow-1 border border-left-0">
+                        @d.Name
+
+                        <button class="btn btn-danger text-light mr-1 float-right btn-sm" onclick="@(x=> DeleteCountry(d))">
+                            <i class="material-icons">delete</i>
+                        </button>
+
+                        <button class="btn btn-info text-light mr-1 float-right btn-sm" onclick="@( x=> EditCountry(d) )">
+                            <i class="material-icons">edit</i>
+                        </button>
+
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+<MsgBox MsgData="@messageBox" />
+
+<Modal IsShow="@IsShowCountryForm">
+
+    <ModalHeader>
+        @TitleCountryForm
+    </ModalHeader>
+
+    <ModalBody>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Name</span>
+            </div>
+            <input type="text" class="form-control" bind="@data.Name" />
+        </div>
+    </ModalBody>
+
+    <ModalFooter>
+        <button class="btn btn-success" style="width: 100px" onclick="@SaveCountry">Save</button>
+        <button class="btn btn-secondary" style="width: 100px" onclick="@HideCountryForm">Cancel</button>
+    </ModalFooter>
+
+</Modal>
+@functions{
+    public MessageBox messageBox { get; set; } = new MessageBox();
+    protected override void OnInit()
+    {
+        messageBox.OnChange += StateHasChanged;
+    }
+
+    public string SearchText { get; set; } = "";
+    public bool IsShowCountryForm { get; set; } = false;
+    public string TitleCountryForm { get; set; } = "Country";
+    public DAL.Country data { get; set; } = new DAL.Country();
+
+    void ShowCountryForm()
+    {
+        IsShowCountryForm = true;
+        StateHasChanged();
+    }
+    void HideCountryForm()
+    {
+        IsShowCountryForm = false;
+        StateHasChanged();
+    }
+
+    void NewCountry()
+    {
+        data = new DAL.Country();
+        ShowCountryForm();
+    }
+    void EditCountry(DAL.Country d)
+    {
+        data = d;
+        ShowCountryForm();
+    }
+    void SaveCountry()
+    {
+        HideCountryForm();
+        if (data.Id == 0)
+        {
+            if (Country.Create(data))
+            {
+                messageBox.ShowMessage("Country", "Created");
+            }
+            else
+            {
+                messageBox.ShowMessage("Country", "Not Created");
+            }
+        }
+        else
+        {
+            if (Country.Update(data))
+            {
+                messageBox.ShowMessage("Country", "Updated");
+            }
+            else
+            {
+                messageBox.ShowMessage("Country", "Not Updated");
+            }
+        }
+    }
+    void DeleteCountry(DAL.Country d)
+    {
+        messageBox.ShowMessage("Delete", $"Are you delete the {d.Name} from Country?", () =>
+        {
+            messageBox.HideMessage();
+            if (Country.Delete(d))
+            {
+                messageBox.ShowMessage("Delete", $"{d.Name} is Deleted");
+            }
+            else
+            {
+                messageBox.ShowMessage("Delete", $"{d.Name} is not Deleted");
+            }
+            return true;
+        });
+    }
+
+}
