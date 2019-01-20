@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using NUBE.App.Services;
+using NUBE.BLL.IRepositories;
+using NUBE.BLL.Repositories;
 
 namespace NUBE.App
 {
@@ -11,6 +13,10 @@ namespace NUBE.App
             // Since Blazor is running on the server, we can use an application service
             // to read the forecast data.
             services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<AppState>();
+
+            services.AddTransient<IRelationShipRepository, RelationShipRepository>();            
+
         }
 
         public void Configure(IBlazorApplicationBuilder app)

@@ -1,0 +1,39 @@
+﻿@if (IsShow)
+{
+
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    @ModalHeader
+                </div>
+                <div class="modal-body">
+                    @ModalBody
+                </div>
+                <div class="modal-footer bg-light">
+                    @ModalFooter
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@functions{
+    [Parameter] protected bool IsShow { get; set; } = false;
+    [Parameter] protected RenderFragment ModalHeader { get; set; }
+    [Parameter] protected RenderFragment ModalBody { get; set; }
+    [Parameter] protected RenderFragment ModalFooter { get; set; }
+
+    public void Show()
+    {
+        IsShow = true;
+    }
+
+    public void Hide()
+    {
+        IsShow = false;
+    }
+
+}

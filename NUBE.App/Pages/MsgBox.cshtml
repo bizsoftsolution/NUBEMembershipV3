@@ -1,0 +1,21 @@
+﻿<Modal IsShow="@MsgData.MsgBoxShow">
+    <ModalHeader>
+        @MsgData.MsgBoxTitle
+    </ModalHeader>
+    <ModalBody>
+        @MsgData.MsgBoxMessage
+    </ModalBody>
+    <ModalFooter>
+        <button class="btn btn-success" style="width:100px" onclick="@(x => { MsgData.MsgOnOk(); })">Ok</button>
+
+        @if (MsgData.MsgBoxIsConfirm)
+        {
+            <button class="btn btn-secondary"   style="width:100px" onclick="@(x=> { MsgData.MsgOnCancel(); })">Cancel</button>
+        }
+
+    </ModalFooter>
+</Modal>
+
+@functions{
+    [Parameter] protected MessageBox MsgData { get; set; }
+}

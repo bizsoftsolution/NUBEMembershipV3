@@ -1,3 +1,39 @@
 ﻿@page "/Resignation"
 
-Resignation
+
+<div class="card">
+    <div class="card-header">
+        Membership
+    </div>
+    <div class="card-body">
+        <TabSet>
+            <Tab Title="Member Detail">
+                <MemberDetail />
+            </Tab>
+            <Tab Title="IRC">
+                <MemberIRC />
+            </Tab>
+            <Tab Title="Bank Address">
+                <MemberBankDetail />
+            </Tab>
+            <Tab Title="Residential Address">
+                <MemberResidentialAddress />
+            </Tab>
+            <Tab Title="Fund Details">
+                <MemberFundDetails />
+            </Tab>
+            <Tab Title="Nominee Details">
+                <MemberNomineeDetails />
+            </Tab>
+            <Tab Title="Resignation">
+                <MemberResignation />
+            </Tab>
+        </TabSet>
+    </div>
+    <div class="card-footer">
+        <button type="button" class="btn btn-primary"> <span class="oi oi-plus" aria-hidden="true"></span> NEW</button>
+        <button type="button" class="btn btn-primary"> <span class="oi oi-clipboard" aria-hidden="true"></span> SAVE</button>
+        <button type="button" class="btn btn-primary"> <span class="oi oi-flash" aria-hidden="true"></span> DELETE</button>
+        <button type="button" class="btn btn-primary"> <span class="oi oi-magnifying-glass" aria-hidden="true"></span> SEARCH</button>
+    </div>
+</div>

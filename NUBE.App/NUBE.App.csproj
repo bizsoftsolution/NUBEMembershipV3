@@ -14,4 +14,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.7.0" PrivateAssets="all" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NUBE.BLL\NUBE.BLL.csproj" />
+    <ProjectReference Include="..\NUBE.Common\NUBE.Common.csproj" />
+    <ProjectReference Include="..\NUBE.DAL\NUBE.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

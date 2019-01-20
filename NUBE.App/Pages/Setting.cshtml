@@ -1,3 +1,25 @@
 ﻿@page "/Setting"
 
-Setting
+
+<div class="card" style="height:550px">
+    <div class="card-header bg-primary text-light">
+        Setting
+    </div>
+    <div class="card-body">
+        <TabSet>
+            <Tab Title="UNION">
+                <SettingUnionDetail />
+            </Tab>
+            <Tab Title="BANK">
+                <SettingBankDetail />
+            </Tab>
+            <Tab Title="RELATION">
+                <SettingRelationDetail />
+            </Tab>
+            <Tab Title="OTHERS">
+                <SettingOtherDetail />
+            </Tab>
+        </TabSet>
+    </div>
+
+</div>

@@ -13,6 +13,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NUBE.App\NUBE.App.csproj" />
+    <ProjectReference Include="..\NUBE.BLL\NUBE.BLL.csproj" />
+    <ProjectReference Include="..\NUBE.Common\NUBE.Common.csproj" />
+    <ProjectReference Include="..\NUBE.DAL\NUBE.DAL.csproj" />
   </ItemGroup>
 
 </Project>
