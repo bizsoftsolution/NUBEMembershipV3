@@ -15,7 +15,10 @@ namespace NUBE.App
             services.AddSingleton<WeatherForecastService>();
             services.AddSingleton<AppState>();
 
-            services.AddTransient<IRelationShipRepository, RelationShipRepository>();            
+            services.AddTransient<IRelationShipRepository, RelationShipRepository>();
+            services.AddTransient<ICountryRepository, CountryRepository>();
+            services.AddTransient<IStateRepository, StateRepository>();
+            services.AddTransient<ICityRepository, CityRepository>();
 
         }
 
