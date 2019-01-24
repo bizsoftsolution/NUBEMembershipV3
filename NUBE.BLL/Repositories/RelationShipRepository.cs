@@ -11,6 +11,20 @@ namespace NUBE.BLL.Repositories
     {
         public RelationShipRepository(NUBEMembershipDBContext context) : base(context)
         {
+
+        }
+
+        public bool IsValid(Relationship relationship)
+        {
+            if (string.IsNullOrWhiteSpace(relationship.Name))
+            {
+                return false;
+            }
+            else if (Any(x=> x.Name==relationship.Name && x.Id!=relationship.Id))
+            {
+                return false;
+            }           
+            return true;
         }
     }
 }

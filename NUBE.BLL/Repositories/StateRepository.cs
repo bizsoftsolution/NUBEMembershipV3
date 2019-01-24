@@ -17,5 +17,15 @@ namespace NUBE.BLL.Repositories
         {
             return _context.States.Include(x => x.Country).Where(predicate).ToList();
         }
+        public int IdByName(string name)
+        {
+            try
+            {
+                return Find(x => x.Name == name).FirstOrDefault().Id;
+            }
+            catch (Exception ex) { }
+            return 0;
+
+        }
     }
 }

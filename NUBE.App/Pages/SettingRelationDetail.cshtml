@@ -104,29 +104,35 @@
     }
     void SaveRelation()
     {
-        HideRelationForm();
-        if (data.Id == 0)
+
+
+        if (RelationShip.IsValid(data))
         {
-            if (RelationShip.Create(data))
+            HideRelationForm();
+            if (data.Id == 0)
             {
-                messageBox.ShowMessage("Relation", "Created");
+                if (RelationShip.Create(data))
+                {
+                    messageBox.ShowMessage("Relation", "Created");
+                }
+                else
+                {
+                    messageBox.ShowMessage("Relation", "Not Created");
+                }
             }
             else
             {
-                messageBox.ShowMessage("Relation", "Not Created");
+                if (RelationShip.Update(data))
+                {
+                    messageBox.ShowMessage("Relation", "Updated");
+                }
+                else
+                {
+                    messageBox.ShowMessage("Relation", "Not Updated");
+                }
             }
         }
-        else
-        {
-            if (RelationShip.Update(data))
-            {
-                messageBox.ShowMessage("Relation", "Updated");
-            }
-            else
-            {
-                messageBox.ShowMessage("Relation", "Not Updated");
-            }
-        }
+
     }
     void DeleteRelation(DAL.Relationship d)
     {

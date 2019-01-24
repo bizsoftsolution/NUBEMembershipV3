@@ -7,7 +7,7 @@ using NUBE.DAL;
 namespace NUBE.BLL.IRepositories
 {
     public interface IRelationShipRepository: IRepository<Relationship>
-    {
-
-    }
+    {         
+        bool IsValid(Relationship relationship);        
+    }    
 }

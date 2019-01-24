@@ -8,5 +8,7 @@ namespace NUBE.BLL.IRepositories
 {
     public interface ICityRepository : IRepository<City>
     {
+        IEnumerable<City> FindIncluceState(Func<City, bool> predicate);
     }
+    
 }
