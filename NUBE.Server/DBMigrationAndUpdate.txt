@@ -3,4 +3,5 @@ Add Migration
 	dotnet ef migrations add "MigratinName" 
 
 DB Update 
+	cd .\NUBE.Server
 	dotnet ef database update

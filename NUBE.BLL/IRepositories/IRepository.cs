@@ -18,6 +18,12 @@ namespace NUBE.BLL.IRepositories
         bool Update(T entity);
 
         bool Delete(T entity);
+        void Reload(T entity);
+        bool IsValid(T entity);
+        bool CanDelete(T entity);
+        int IdByName(string name);
+        bool IsValidName(T entity);
+        bool ExistName(T entity);
 
         int Count();
         int Count(Func<T, bool> predicate);

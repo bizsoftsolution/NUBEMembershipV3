@@ -55,17 +55,25 @@
     </ModalHeader>
 
     <ModalBody>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text">Name</span>
-            </div>
-            <input type="text" class="form-control" bind="@data.Name" />
+        <div class="form-group @(!Country.IsValidName(data)? "text-danger" : "text-success")">
+            <label for="Name">Name : </label>
+            <input type="text" class="form-control @(!Country.IsValidName(data)? "border-danger" : "border-success")" id="Name" bind="@data.Name" />
+            <span class="help-block">
+                @if (string.IsNullOrWhiteSpace(data.Name))
+                {
+                    <b>Reuired</b>
+                }
+                else if (Country.ExistName(data))
+                {
+                    <b>Already Exist</b>
+                }
+            </span>
         </div>
     </ModalBody>
 
     <ModalFooter>
         <button class="btn btn-success" style="width: 100px" onclick="@SaveCountry">Save</button>
-        <button class="btn btn-secondary" style="width: 100px" onclick="@HideCountryForm">Cancel</button>
+        <button class="btn btn-secondary" style="width: 100px" onclick="@CacenlCountry">Cancel</button>
     </ModalFooter>
 
 </Modal>
@@ -109,40 +117,53 @@
         {
             if (Country.Create(data))
             {
-                messageBox.ShowMessage("Country", "Created");
+                messageBox.ShowMessage(TitleCountryForm, "Created");
             }
             else
             {
-                messageBox.ShowMessage("Country", "Not Created");
+                messageBox.ShowMessage(TitleCountryForm, "Not Created");
             }
         }
         else
         {
             if (Country.Update(data))
             {
-                messageBox.ShowMessage("Country", "Updated");
+                messageBox.ShowMessage(TitleCountryForm, "Updated");
             }
             else
             {
-                messageBox.ShowMessage("Country", "Not Updated");
+                messageBox.ShowMessage(TitleCountryForm, "Not Updated");
             }
         }
     }
     void DeleteCountry(DAL.Country d)
     {
-        messageBox.ShowMessage("Delete", $"Are you delete the {d.Name} from Country?", () =>
+        if (!Country.CanDelete(d))
         {
-            messageBox.HideMessage();
-            if (Country.Delete(d))
+            messageBox.ShowMessage(TitleCountryForm, $"{d.Name} can not Delete. It used to State");
+        }
+        else
+        {
+            messageBox.ShowMessage(TitleCountryForm, $"Are you delete the {d.Name} from Country?", () =>
             {
-                messageBox.ShowMessage("Delete", $"{d.Name} is Deleted");
-            }
-            else
-            {
-                messageBox.ShowMessage("Delete", $"{d.Name} is not Deleted");
-            }
-            return true;
-        });
+                messageBox.HideMessage();
+                if (Country.Delete(d))
+                {
+                    messageBox.ShowMessage(TitleCountryForm, $"{d.Name} is Deleted");
+                }
+                else
+                {
+                    messageBox.ShowMessage(TitleCountryForm, $"{d.Name} is not Deleted");
+                }
+                return true;
+            });
+        }
+
     }
 
+    void CacenlCountry()
+    {
+        if (data.Id != 0) Country.Reload(data);
+        HideCountryForm();
+    }
 }

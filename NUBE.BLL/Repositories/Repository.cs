@@ -20,20 +20,57 @@ namespace NUBE.BLL.Repositories
 
         public bool Create(T entity)
         {
-            _context.Add(entity);
+            try
+            {
+                if (IsValid(entity))
+                {
+                    _context.Add(entity);
+                    Save();
+                    return true;
+                }
+            }
+            catch(Exception ex)
+            {
 
-            Save();
-            return true;
+            }           
+            return false;
         }
-
-        public virtual bool Delete(T entity)
+        public bool Update(T entity)
         {
-            _context.Remove(entity);
+            try
+            {
+                if (IsValid(entity))
+                {
+                    _context.Entry(entity).State = EntityState.Modified;
 
-            Save();
-            return true;
+                    Save();
+                    return true;
+                }
+            }catch(Exception ex)
+            {
+
+            }
+            return false;
         }
+        public bool Delete(T entity)
+        {
+            try
+            {
+                if (CanDelete(entity))
+                {
+                    _context.Remove(entity);
 
+                    Save();
+                    return true;
+                }
+            }catch(Exception ex)
+            {
+
+            }
+            return false;
+        }
+        
+        
         public IEnumerable<T> GetAll()
         {
             return _context.Set<T>();
@@ -44,13 +81,7 @@ namespace NUBE.BLL.Repositories
             return _context.Set<T>().Find(id);
         }
 
-        public bool Update(T entity)
-        {
-            _context.Entry(entity).State = EntityState.Modified;
-
-            Save();
-            return true;
-        }
+        
 
         public IEnumerable<T> Find(Func<T, bool> predicate)
         {
@@ -74,6 +105,33 @@ namespace NUBE.BLL.Repositories
         public bool Any()
         {
             return _context.Set<T>().Any();
+        }
+
+        public virtual int IdByName(string name)
+        {
+            return 0;
+        }
+
+        public virtual bool IsValidName(T entity)
+        {
+            return false;
+        }
+
+        public virtual bool ExistName(T entity)
+        {
+            return false;
+        }
+        public virtual void Reload(T entity)
+        {
+            _context.Entry(entity).Reload();
+        }
+        public virtual bool IsValid(T entity)
+        {
+            return false;
+        }
+        public virtual bool CanDelete(T entity)
+        {
+            return false;
         }
     }
 }

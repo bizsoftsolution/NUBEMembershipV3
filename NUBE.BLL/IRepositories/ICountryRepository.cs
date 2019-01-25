@@ -8,7 +8,6 @@ namespace NUBE.BLL.IRepositories
 {
     public interface ICountryRepository : IRepository<Country>
     {
-        int IdByName(string name);
         
     }
 }
