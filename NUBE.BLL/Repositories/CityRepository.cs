@@ -59,5 +59,32 @@ namespace NUBE.BLL.Repositories
             return true;
         }
 
+        public string StateNameByCityId(int CityId)
+        {
+            try
+            {
+                var c = _context.Cities.Include(x=> x.State).FirstOrDefault(x => x.Id == CityId);
+                return c.State.Name;
+            }catch(Exception ex)
+            {
+
+            }
+            return "";
+        }
+
+        public string CountryNameByCityId(int CityId)
+        {
+            try
+            {
+                var c = _context.Cities.Include(x => x.State.Country).FirstOrDefault(x => x.Id == CityId);
+
+                return c.State.Country.Name;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return "";
+        }
     }
 }

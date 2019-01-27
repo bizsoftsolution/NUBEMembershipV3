@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NUBE.DAL;
 
 namespace NUBE.Server.Migrations
 {
     [DbContext(typeof(NUBEMembershipDBContext))]
-    partial class NUBEMembershipDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190125192447_PersonTitle")]
+    partial class PersonTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -46,29 +48,6 @@ namespace NUBE.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
-                });
-
-            modelBuilder.Entity("NUBE.DAL.OrganisationDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<int>("CityId");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PhoneNo");
-
-                    b.Property<string>("PostalCode");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CityId");
-
-                    b.ToTable("OrganisationDetails");
                 });
 
             modelBuilder.Entity("NUBE.DAL.PersonTitle", b =>
@@ -119,14 +98,6 @@ namespace NUBE.Server.Migrations
                     b.HasOne("NUBE.DAL.State", "State")
                         .WithMany("Cities")
                         .HasForeignKey("StateId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("NUBE.DAL.OrganisationDetail", b =>
-                {
-                    b.HasOne("NUBE.DAL.City", "City")
-                        .WithMany("OrganisationDetails")
-                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

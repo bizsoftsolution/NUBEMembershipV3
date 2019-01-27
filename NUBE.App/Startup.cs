@@ -19,6 +19,8 @@ namespace NUBE.App
             services.AddTransient<ICountryRepository, CountryRepository>();
             services.AddTransient<IStateRepository, StateRepository>();
             services.AddTransient<ICityRepository, CityRepository>();
+            services.AddTransient<IPersonTitleRepository, PersonTitleRepository>();
+            services.AddTransient<IOrganisationDetailRepository, OrganisationDetailRepository>();
 
         }
 
