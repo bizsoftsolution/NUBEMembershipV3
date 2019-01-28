@@ -8,7 +8,6 @@ namespace NUBE.BLL.IRepositories
 {
     public interface IStateRepository : IRepository<State>
     {
-        IEnumerable<State> FindIncluceCountry(Func<State, bool> predicate);
-        int IdByName(string name);
+        string CountryName { get; set; }
     }    
 }

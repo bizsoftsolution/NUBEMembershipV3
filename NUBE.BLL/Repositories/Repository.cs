@@ -166,17 +166,17 @@ namespace NUBE.BLL.Repositories
             IsShowForm = false;
             NotifyStateChanged();
         }
-        public void NewForm()
+        public virtual void NewForm()
         {
             data = (T)Activator.CreateInstance(typeof(T));
             ShowForm();
         }
-        public void EditForm(T d)
+        public virtual void EditForm(T d)
         {
             data = d;
             ShowForm();
         }
-        public void CancelForm()
+        public virtual void CancelForm()
         {
             if ((int)data.GetType().GetProperty("Id").GetValue(data) != 0) Reload(data);
             HideForm();
