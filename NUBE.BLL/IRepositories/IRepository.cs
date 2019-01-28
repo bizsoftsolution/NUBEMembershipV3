@@ -52,7 +52,7 @@ namespace NUBE.BLL.IRepositories
         void HideForm();
         void NewForm();
         void EditForm(T d);
-        void CacenlForm();
+        void CancelForm();
         MessageBox MsgData { get; set; }
         void SaveForm();
         void DeleteForm(T d);

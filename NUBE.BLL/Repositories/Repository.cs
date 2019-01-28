@@ -16,6 +16,7 @@ namespace NUBE.BLL.Repositories
         public Repository(NUBEMembershipDBContext context)
         {
             _context = context;
+            MsgData.OnChange += NotifyStateChanged;
         }
         protected void Save() => _context.SaveChanges();
 
@@ -142,8 +143,7 @@ namespace NUBE.BLL.Repositories
         public void NotifyStateChanged()
         {
             OnChange?.Invoke();
-        }
-
+        }        
         public string SearchText { get; set; } = "";
         public virtual IEnumerable<T> ToList
         {
@@ -176,7 +176,7 @@ namespace NUBE.BLL.Repositories
             data = d;
             ShowForm();
         }
-        public void CacenlForm()
+        public void CancelForm()
         {
             if ((int)data.GetType().GetProperty("Id").GetValue(data) != 0) Reload(data);
             HideForm();

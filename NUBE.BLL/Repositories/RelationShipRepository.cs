@@ -66,7 +66,7 @@ namespace NUBE.BLL.Repositories
                 {
 
                 }
-                return new List<Relationship>();
+                return base.ToList;
             }
         }        
         public override string FormTile { get; set; } = "Relation"; 

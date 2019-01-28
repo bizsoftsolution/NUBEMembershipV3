@@ -50,5 +50,23 @@ namespace NUBE.BLL.Repositories
         {
             return true;
         }
+
+        public override IEnumerable<PersonTitle> ToList
+        {
+            get
+            {
+                try
+                {
+                    var rv = Find(x => String.IsNullOrWhiteSpace(SearchText) || x.Name.ToLower().Contains(SearchText.ToLower())).ToList();
+                    return rv;
+                }
+                catch (Exception ex)
+                {
+
+                }
+                return base.ToList;
+            }
+        }
+        public override string FormTile { get; set; } = "Person Title";
     }
 }

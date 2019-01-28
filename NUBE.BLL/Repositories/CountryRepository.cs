@@ -52,6 +52,22 @@ namespace NUBE.BLL.Repositories
             var c =_context.States.Count(x => x.CountryId == data.Id);
             return c==0;
         }
+        public override IEnumerable<Country> ToList
+        {
+            get
+            {
+                try
+                {
+                    var rv = Find(x => String.IsNullOrWhiteSpace(SearchText) || x.Name.ToLower().Contains(SearchText.ToLower())).ToList();
+                    return rv;
+                }
+                catch (Exception ex)
+                {
 
+                }
+                return base.ToList;
+            }
+        }
+        public override string FormTile { get; set; } = "Country";
     }
 }
