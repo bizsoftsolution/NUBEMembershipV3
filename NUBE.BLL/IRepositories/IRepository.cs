@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NUBE.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,11 +14,7 @@ namespace NUBE.BLL.IRepositories
 
         T GetById(int id);
 
-        bool Create(T entity);
-
-        bool Update(T entity);
-
-        bool Delete(T entity);
+       
         void Reload(T entity);
         bool IsValid(T entity);
         bool CanDelete(T entity);
@@ -31,5 +28,35 @@ namespace NUBE.BLL.IRepositories
         bool Any(Func<T, bool> predicate);
 
         bool Any();
+
+        #region CUD
+
+        bool Create(T entity);
+        bool Update(T entity);
+        bool Delete(T entity);
+
+        #endregion
+
+        #region Form
+
+        event Action OnChange;
+        void NotifyStateChanged();
+
+        string SearchText { get; set; }
+        IEnumerable<T> ToList { get; }
+        T data { get; set; }
+        string FormTile { get; set; }
+        bool IsShowForm { get; set; }
+
+        void ShowForm();
+        void HideForm();
+        void NewForm();
+        void EditForm(T d);
+        void CacenlForm();
+        MessageBox MsgData { get; set; }
+        void SaveForm();
+        void DeleteForm(T d);
+
+        #endregion
     }
 }

@@ -1,13 +1,10 @@
-﻿@inject IRelationShipRepository RelationShip
+﻿@inject IRelationShipRepository repRelationShip
 
-@{
-    int i = 1;
-    var lst = RelationShip.Find(x => String.IsNullOrWhiteSpace(SearchText) || x.Name.ToLower().Contains(SearchText.ToLower())).ToList();
-}
+
 <div class="container">
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" bind="@SearchText" placeholder="Search" />
+        <input type="text" class="form-control" bind="@repRelationShip.SearchText" placeholder="Search" />
         <div class="input-group-append">
             <button class="btn btn-success" type="submit">Go</button>
         </div>
@@ -16,27 +13,27 @@
     <div class="d-flex bg-info">
         <div class="p-2 border text-light" style="width:50px">SNo</div>
         <div class="p-2 flex-grow-1 border border-left-0 text-light">
-            Relation <span class="badge badge-light">@lst.Count()</span>
-            <button class="btn btn-light text-info float-right btn-sm" onclick="@NewRelation">
+            Relation <span class="badge badge-light">@repRelationShip.ToList.Count()</span>
+            <button class="btn btn-light text-info float-right btn-sm" onclick="@repRelationShip.NewForm">
                 <span class="oi oi-plus " aria-hidden="true"></span> NEW
             </button>
         </div>
     </div>
     <div style="height:250px;overflow:auto" class="border">
         @{
-
-            foreach (var d in lst)
+            int i = 1;
+            foreach (var d in repRelationShip.ToList)
             {
                 <div class="d-flex @( i%2==0? "bg-light" : "")">
                     <div class="p-2 border text-right" style="width:50px">@(i++)</div>
                     <div class="p-2 flex-grow-1 border border-left-0">
                         @d.Name
 
-                        <button class="btn btn-danger text-light mr-1 float-right btn-sm " onclick="@(x=> DeleteRelation(d))">
+                        <button class="btn btn-danger text-light mr-1 float-right btn-sm " onclick="@(x=> repRelationShip.DeleteForm(d))">
                             <i class="material-icons">delete</i>
                         </button>
 
-                        <button class="btn btn-info text-light mr-1 float-right btn-sm" onclick="@( x=> EditRelation(d) )">
+                        <button class="btn btn-info text-light mr-1 float-right btn-sm" onclick="@( x=> repRelationShip.EditForm(d) )">
                             <i class="material-icons">edit</i>
                         </button>
 
@@ -46,24 +43,24 @@
         }
     </div>
 </div>
-<MsgBox MsgData="@messageBox" />
+<MsgBox MsgData="@repRelationShip.MsgData" />
 
-<Modal IsShow="@IsShowRelationForm">
+<Modal IsShow="@repRelationShip.IsShowForm">
     
     <ModalHeader>
-        @TitleRelationForm
+        @repRelationShip.FormTile
     </ModalHeader>
 
     <ModalBody>
-        <div class="form-group @(!RelationShip.IsValidName(data)? "text-danger" : "text-success")">
+        <div class="form-group @(!repRelationShip.IsValidName(repRelationShip.data)? "text-danger" : "text-success")">
             <label for="Name">Name : </label>
-            <input type="text" class="form-control @(!RelationShip.IsValidName(data)? "border-danger" : "border-success")" id="Name" bind="@data.Name" />
+            <input type="text" class="form-control @(!repRelationShip.IsValidName(repRelationShip.data)? "border-danger" : "border-success")" id="Name" bind="@repRelationShip.data.Name" />
             <span class="help-block">
-                @if(string.IsNullOrWhiteSpace(data.Name))
+                @if(string.IsNullOrWhiteSpace(repRelationShip.data.Name))
                 {
                     <b>Reuired</b>
                 }
-                else if(RelationShip.ExistName(data))
+                else if(repRelationShip.ExistName(repRelationShip.data))
                 {
                     <b>Already Exist</b>
                 }
@@ -73,109 +70,17 @@
     </ModalBody>
 
     <ModalFooter>
-        <button class="btn btn-success" style="width: 100px" onclick="@SaveRelation">Save</button>
-        <button class="btn btn-secondary" style="width: 100px" onclick="@CacenlRelation">Cancel</button>
+        <button class="btn btn-success" style="width: 100px" onclick="@repRelationShip.SaveForm">Save</button>
+        <button class="btn btn-secondary" style="width: 100px" onclick="@repRelationShip.CacenlForm">Cancel</button>
     </ModalFooter>
 
 </Modal>
 @functions{
-    public MessageBox messageBox { get; set; } = new MessageBox();
+
     protected override void OnInit()
     {
-        messageBox.OnChange += StateHasChanged;
+        repRelationShip.MsgData.OnChange += StateHasChanged;
+        repRelationShip.OnChange += StateHasChanged;
     }
-
-    public string SearchText { get; set; } = "";
-    public bool IsShowRelationForm { get; set; } = false;
-    public string TitleRelationForm { get; set; } = "Relation";
-    public DAL.Relationship data { get; set; } = new DAL.Relationship();
-
-    void ShowRelationForm()
-    {
-        IsShowRelationForm = true;
-        StateHasChanged();
-    }
-    void HideRelationForm()
-    {
-        IsShowRelationForm = false;
-        StateHasChanged();
-    }
-
-    void NewRelation()
-    {
-        data = new DAL.Relationship();
-        ShowRelationForm();
-    }
-    void EditRelation(DAL.Relationship d)
-    {
-        data =d;
-        ShowRelationForm();
-    }
-    void SaveRelation()
-    {
-
-
-        if (RelationShip.IsValid(data))
-        {
-            HideRelationForm();
-            if (data.Id == 0)
-            {
-                if (RelationShip.Create(data))
-                {
-                    messageBox.ShowMessage(TitleRelationForm, "Created");
-                }
-                else
-                {
-                    messageBox.ShowMessage(TitleRelationForm, "Not Created");
-                }
-            }
-            else
-            {
-                if (RelationShip.Update(data))
-                {
-                    messageBox.ShowMessage(TitleRelationForm, "Updated");
-                }
-                else
-                {
-                    messageBox.ShowMessage(TitleRelationForm, "Not Updated");
-                }
-            }
-        }
-        else
-        {
-
-        }
-
-    }
-    void DeleteRelation(DAL.Relationship d)
-    {
-        if (!RelationShip.CanDelete(d))
-        {
-            messageBox.ShowMessage(TitleRelationForm, $"{d.Name} can not Delete. It used to Member");
-        }
-        else
-        {
-            messageBox.ShowMessage(TitleRelationForm, $"Are you delete the {d.Name} from Relation?", () =>
-            {
-                messageBox.HideMessage();
-                if (RelationShip.Delete(d))
-                {
-                    messageBox.ShowMessage(TitleRelationForm, $"{d.Name} is Deleted");
-                }
-                else
-                {
-                    messageBox.ShowMessage(TitleRelationForm, $"{d.Name} is not Deleted");
-                }
-                return true;
-            });
-        }
-
-    }
-    void CacenlRelation()
-    {
-        if (data.Id != 0) RelationShip.Reload(data);
-        HideRelationForm();
-    }
-
 
 }

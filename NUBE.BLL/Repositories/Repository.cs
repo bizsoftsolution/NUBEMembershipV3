@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using NUBE.DAL;
 using Microsoft.EntityFrameworkCore;
+using NUBE.Common;
 
 namespace NUBE.BLL.Repositories
 {
@@ -133,5 +134,115 @@ namespace NUBE.BLL.Repositories
         {
             return false;
         }
+
+
+        #region Form
+
+        public event Action OnChange;
+        public void NotifyStateChanged()
+        {
+            OnChange?.Invoke();
+        }
+
+        public string SearchText { get; set; } = "";
+        public virtual IEnumerable<T> ToList
+        {
+            get
+            {
+                return _context.Set<T>();
+            }            
+        }
+        public virtual T data { get; set; }
+        public virtual string FormTile { get; set; } = "";
+        public bool IsShowForm { get; set; } = false;
+
+        public void ShowForm()
+        {
+            IsShowForm = true;
+            NotifyStateChanged();
+        }
+        public void HideForm()
+        {
+            IsShowForm = false;
+            NotifyStateChanged();
+        }
+        public void NewForm()
+        {
+            data = (T)Activator.CreateInstance(typeof(T));
+            ShowForm();
+        }
+        public void EditForm(T d)
+        {
+            data = d;
+            ShowForm();
+        }
+        public void CacenlForm()
+        {
+            if ((int)data.GetType().GetProperty("Id").GetValue(data) != 0) Reload(data);
+            HideForm();
+        }
+
+        public MessageBox MsgData { get; set; } = new MessageBox();
+        public virtual void SaveForm()
+        {
+
+
+            if (IsValid(data))
+            {
+                HideForm();
+                if ((int)data.GetType().GetProperty("Id").GetValue(data) == 0)
+                {
+                    if (Create(data))
+                    {
+                        MsgData.ShowMessage(FormTile, "Created");
+                    }
+                    else
+                    {
+                        MsgData.ShowMessage(FormTile, "Not Created");
+                    }
+                }
+                else
+                {
+                    if (Update(data))
+                    {
+                        MsgData.ShowMessage(FormTile, "Updated");
+                    }
+                    else
+                    {
+                        MsgData.ShowMessage(FormTile, "Not Updated");
+                    }
+                }
+            }
+            else
+            {
+
+            }
+
+        }
+        public virtual void DeleteForm(T d)
+        {
+            if (!CanDelete(d))
+            {
+                MsgData.ShowMessage(FormTile, "It can not Delete. It used to some one");
+            }
+            else
+            {
+                MsgData.ShowMessage(FormTile, "Are you delete this?", () =>
+                {
+                    MsgData.HideMessage();
+                    if (Delete(d))
+                    {
+                        MsgData.ShowMessage(FormTile, "Deleted");
+                    }
+                    else
+                    {
+                        MsgData.ShowMessage(FormTile, "not Deleted");
+                    }
+                    return true;
+                });
+            }
+
+        }
+        #endregion
     }
 }

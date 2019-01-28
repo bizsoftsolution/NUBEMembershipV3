@@ -10,4 +10,5 @@ namespace NUBE.BLL.IRepositories
     {
         
     }    
+
 }

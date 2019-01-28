@@ -13,6 +13,7 @@ namespace NUBE.BLL.Repositories
         {
 
         }
+
         public override int IdByName(string name)
         {
             try
@@ -44,7 +45,7 @@ namespace NUBE.BLL.Repositories
             return true;
         }
         public override bool IsValid(Relationship data)
-        {          
+        {
             return IsValidName(data);
         }
         public override bool CanDelete(Relationship data)
@@ -52,5 +53,22 @@ namespace NUBE.BLL.Repositories
             return true;
         }
 
+        public override IEnumerable<Relationship> ToList
+        {
+            get
+            {
+                try
+                {
+                    var rv = Find(x => String.IsNullOrWhiteSpace(SearchText) || x.Name.ToLower().Contains(SearchText.ToLower())).ToList();
+                    return rv;
+                }
+                catch(Exception ex)
+                {
+
+                }
+                return new List<Relationship>();
+            }
+        }        
+        public override string FormTile { get; set; } = "Relation"; 
     }
 }
