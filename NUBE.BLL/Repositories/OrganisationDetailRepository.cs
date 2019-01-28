@@ -50,9 +50,68 @@ namespace NUBE.BLL.Repositories
             return true;
         }
 
-        public OrganisationDetail GetOrganisationDetail()
-        {            
-            return _context.OrganisationDetails.Include(x=> x.City).FirstOrDefault();
+        public void GetOrganisationDetail()
+        {
+            var d = _context.OrganisationDetails.Include(x=> x.City).FirstOrDefault();
+            if (d == null)
+            {
+                NewForm();
+                CityName = "";
+            }
+            else
+            {
+                EditForm(d);
+                CityName = d.City.Name;
+            }
+            NotifyStateChanged();
         }
+
+        private string _CityName;
+        public string CityName
+        {
+            get { return _CityName; }
+            set
+            {
+                if (_CityName != value)
+                {
+                    _CityName = value;
+                    if (string.IsNullOrWhiteSpace(CityName))
+                    {
+                        data.CityId = 0;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            data.CityId = _context.Cities.FirstOrDefault(x => x.Name == CityName).Id;
+                        }
+                        catch (Exception ex) { data.CityId = 0; }
+                    }
+                    if (data.CityId == 0)
+                    {
+                        StateName = "";
+                        CountryName = "";
+                    }
+                    else
+                    {
+                        var d = _context.Cities.Where(x => x.Id == data.CityId).Select(x => new { StateName = x.State.Name, CountryName = x.State.Country.Name }).FirstOrDefault();
+                        if (d != null)
+                        {
+                            StateName = d.StateName;
+                            CountryName = d.CountryName;
+                        }
+                        else
+                        {
+                            StateName = "";
+                            CountryName = "";
+                        }
+                    }
+                    NotifyStateChanged();
+                }
+            }
+        }
+
+        public string StateName { get; set; }
+        public string CountryName { get; set; }
     }
 }

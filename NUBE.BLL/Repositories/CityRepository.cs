@@ -13,20 +13,6 @@ namespace NUBE.BLL.Repositories
         {
         }
 
-        public IEnumerable<City> FindIncluceState(Func<City, bool> predicate)
-        {
-            return _context.Cities.Include(x => x.State).Where(predicate).ToList();
-        }
-        public override int IdByName(string name)
-        {
-            try
-            {
-                return Find(x => x.Name == name).FirstOrDefault().Id;
-            }
-            catch (Exception ex) { }
-            return 0;
-
-        }
         public override bool ExistName(City data)
         {
             if (Any(x => x.Name.ToLower() == data.Name.ToLower() && x.Id != data.Id))
@@ -59,32 +45,61 @@ namespace NUBE.BLL.Repositories
             return true;
         }
 
-        public string StateNameByCityId(int CityId)
+        private string _stateName;
+        public string StateName
         {
-            try
+            get { return _stateName; }
+            set
             {
-                var c = _context.Cities.Include(x=> x.State).FirstOrDefault(x => x.Id == CityId);
-                return c.State.Name;
-            }catch(Exception ex)
-            {
-
+                if (_stateName != value)
+                {
+                    _stateName = value;
+                    if (string.IsNullOrWhiteSpace(StateName))
+                    {
+                        data.StateId = 0;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            data.StateId = _context.States.FirstOrDefault(x => x.Name == StateName).Id;
+                        }
+                        catch (Exception ex) { data.StateId = 0; }
+                    }
+                    NotifyStateChanged();
+                }
             }
-            return "";
         }
 
-        public string CountryNameByCityId(int CityId)
+        public override IEnumerable<City> ToList
         {
-            try
+            get
             {
-                var c = _context.Cities.Include(x => x.State.Country).FirstOrDefault(x => x.Id == CityId);
+                try
+                {
+                    var rv = _context.Cities.Include(x => x.State).Where(x => String.IsNullOrWhiteSpace(SearchText) || (x.Name.ToLower().Contains(SearchText.ToLower()) || x.State.Name.ToLower().Contains(SearchText.ToLower()))).ToList();
+                    return rv;
+                }
+                catch (Exception ex)
+                {
 
-                return c.State.Country.Name;
+                }
+                return base.ToList;
             }
-            catch (Exception ex)
-            {
+        }
+        public override string FormTile { get; set; } = "City";
 
-            }
-            return "";
+        public override void NewForm()
+        {
+            base.NewForm();
+            StateName = "";
+            NotifyStateChanged();
+        }
+        public override void EditForm(City d)
+        {
+            base.EditForm(d);
+            StateName = d.State.Name;
+            NotifyStateChanged();
         }
     }
 }

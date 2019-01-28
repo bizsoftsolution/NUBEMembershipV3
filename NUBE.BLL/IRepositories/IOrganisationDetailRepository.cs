@@ -7,6 +7,10 @@ namespace NUBE.BLL.IRepositories
 {
     public interface IOrganisationDetailRepository:IRepository<DAL.OrganisationDetail>
     {
-        DAL.OrganisationDetail GetOrganisationDetail();
+        void GetOrganisationDetail();
+
+        string CityName { get; set; }
+        string StateName { get; set; }
+        string CountryName { get; set; }
     }
 }

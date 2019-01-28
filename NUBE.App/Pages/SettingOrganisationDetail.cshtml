@@ -1,18 +1,18 @@
-﻿@inject IOrganisationDetailRepository OrganisationDetail
-@inject ICityRepository CityRepository
+﻿@inject IOrganisationDetailRepository repOrganisationDetail
+
 
 <div class="container" style="height:350px; overflow:auto">
 
     <div>
-        <div class="form-group @(!OrganisationDetail.IsValidName(data)? "text-danger" : "text-success")">
+        <div class="form-group @(!repOrganisationDetail.IsValidName(repOrganisationDetail.data)? "text-danger" : "text-success")">
             <label for="Name">Name : </label>
-            <input type="text" class="form-control @(!OrganisationDetail.IsValidName(data)? "border-danger" : "border-success")" id="Name" bind="@data.Name" />
+            <input type="text" class="form-control @(!repOrganisationDetail.IsValidName(repOrganisationDetail.data)? "border-danger" : "border-success")" id="Name" bind="@repOrganisationDetail.data.Name" />
             <span class="help-block">
-                @if (string.IsNullOrWhiteSpace(data.Name))
+                @if (string.IsNullOrWhiteSpace(repOrganisationDetail.data.Name))
                 {
                     <b>Reuired</b>
                 }
-                else if (OrganisationDetail.ExistName(data))
+                else if (repOrganisationDetail.ExistName(repOrganisationDetail.data))
                 {
                     <b>Already Exist</b>
                 }
@@ -21,18 +21,18 @@
 
         <div class="form-group">
             <label for="Address">Address : </label>
-            <textarea id="Address" bind="@data.Address" type="text" class="form-control"></textarea>
+            <textarea id="Address" bind="@repOrganisationDetail.data.Address" type="text" class="form-control"></textarea>
         </div>
-        <div class="form-group @(data.CityId==0 ? "text-danger" : "text-success")">
+        <div class="form-group @(repOrganisationDetail.data.CityId==0 ? "text-danger" : "text-success")">
             <label for="City">City : </label>
             <SelectCity />
-            <input list="lstCity" id="City" bind="@CityName" class="form-control  @(  data.CityId == 0 ? "border-danger" : "border-success")" type="text" />
+            <input list="lstCity" id="City" bind="@repOrganisationDetail.CityName" class="form-control  @(  repOrganisationDetail.data.CityId == 0 ? "border-danger" : "border-success")" type="text" />
             <span class="help-block">
-                @if (string.IsNullOrWhiteSpace(CityName))
+                @if (string.IsNullOrWhiteSpace(repOrganisationDetail.CityName))
                 {
                     <b>Reuired</b>
                 }
-                else if (data.CityId == 0)
+                else if (repOrganisationDetail.data.CityId == 0)
                 {
                     <b>Enter Valid City</b>
                 }
@@ -40,123 +40,40 @@
         </div>
         <div class="form-group">
             <label for="State">State : </label>
-            <input  id="State" bind="@StateName" readonly="readonly" type="text" class="form-control" />
+            <input  id="State" bind="@repOrganisationDetail.StateName" readonly="readonly" type="text" class="form-control" />
         </div>
         <div class="form-group">
             <label for="Country">Country : </label>
-            <input id="Country" bind="@CountryName" readonly="readonly" type="text" class="form-control" />
+            <input id="Country" bind="@repOrganisationDetail.CountryName" readonly="readonly" type="text" class="form-control" />
         </div>
         <div class="form-group">
             <label for="PostalCode">Postal Code : </label>
-            <input id="PostalCode" bind="@data.PostalCode" type="text" class="form-control" />
+            <input id="PostalCode" bind="@repOrganisationDetail.data.PostalCode" type="text" class="form-control" />
         </div>
 
         <div class="form-group">
             <label for="PhoneNo">Phone No : </label>
-            <input id="PhoneNo" bind="@data.PhoneNo" type="text" class="form-control" />
+            <input id="PhoneNo" bind="@repOrganisationDetail.data.PhoneNo" type="text" class="form-control" />
         </div>
 
     </div>
 
     <div class="text-right">
-        <button class="btn btn-success" style="width: 100px" onclick="@SaveOrganisationDetail">Save</button>
-        <button class="btn btn-secondary" style="width: 100px" onclick="@CacenlOrganisationDetail">Cancel</button>
+        <button class="btn btn-success" style="width: 100px" onclick="@repOrganisationDetail.SaveForm">Save</button>
+        <button class="btn btn-secondary" style="width: 100px" onclick="@repOrganisationDetail.CancelForm">Cancel</button>
     </div>
 
 </div>
-<MsgBox MsgData="@messageBox" />
+<MsgBox MsgData="@repOrganisationDetail.MsgData" />
 
 @functions{
-    public MessageBox messageBox { get; set; } = new MessageBox();
+
     protected override void OnInit()
     {
-        messageBox.OnChange += StateHasChanged;
-        data = OrganisationDetail.GetOrganisationDetail();
-        if (data == null)
-        {
-            data = new DAL.OrganisationDetail();
-            data.City = new DAL.City();
-        }
-        CityName = data.City.Name;
+        repOrganisationDetail.OnChange += StateHasChanged;
+        repOrganisationDetail.GetOrganisationDetail();
     }
 
-    public string TitleOrganisationDetail { get; set; } = "Organisation Detail";
-    public DAL.OrganisationDetail data { get; set; } = new DAL.OrganisationDetail();
-
-    private string cityName;
-
-    public string CityName
-    {
-        get { return cityName; }
-        set
-        {
-            if (cityName != value)
-            {
-                cityName = value;
-                if (string.IsNullOrWhiteSpace(value))
-                {
-                    data.CityId = 0;
-                }
-                else
-                {
-                    data.CityId = CityRepository.IdByName(value);
-                }
-                if (data.CityId == 0)
-                {
-                    StateName = "";
-                    CountryName = "";
-                }
-                else
-                {
-                    StateName = CityRepository.StateNameByCityId(data.CityId);
-                    CountryName = CityRepository.CountryNameByCityId(data.CityId);
-                }
-                StateHasChanged();
-            }
-        }
-    }
-    public string StateName { get; set; }
-    public string CountryName { get; set; }
-
-    void SaveOrganisationDetail()
-    {
-
-
-        if (OrganisationDetail.IsValid(data))
-        {
-            if (data.Id == 0)
-            {
-                if (OrganisationDetail.Create(data))
-                {
-                    messageBox.ShowMessage(TitleOrganisationDetail, "Created");
-                }
-                else
-                {
-                    messageBox.ShowMessage(TitleOrganisationDetail, "Not Created");
-                }
-            }
-            else
-            {
-                if (OrganisationDetail.Update(data))
-                {
-                    messageBox.ShowMessage(TitleOrganisationDetail, "Updated");
-                }
-                else
-                {
-                    messageBox.ShowMessage(TitleOrganisationDetail, "Not Updated");
-                }
-            }
-        }
-        else
-        {
-
-        }
-
-    }
-    void CacenlOrganisationDetail()
-    {
-        if (data.Id != 0) OrganisationDetail.Reload(data);
-    }
 
 
 }

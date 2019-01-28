@@ -1,0 +1,8 @@
+﻿@inject ICityRepository CityRepository;
+
+<datalist id="lstCity">
+    @foreach (var c in CityRepository.GetAll())
+    {
+        <option value="@c.Name" />
+    }
+</datalist>

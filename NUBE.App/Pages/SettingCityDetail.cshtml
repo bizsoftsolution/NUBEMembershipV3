@@ -1,14 +1,9 @@
-﻿@inject ICityRepository City
-@inject IStateRepository StateRepository;
+﻿@inject ICityRepository repCity
 
-@{
-    int i = 1;
-    var lst = City.FindIncluceState(x => String.IsNullOrWhiteSpace(SearchText) || (x.Name.ToLower().Contains(SearchText.ToLower()) || x.State.Name.ToLower().Contains(SearchText.ToLower()))).ToList();
-}
 <div class="container">
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" bind="@SearchText" placeholder="Search" />
+        <input type="text" class="form-control" bind="@repCity.SearchText" placeholder="Search" />
         <div class="input-group-append">
             <button class="btn btn-success" type="submit">Go</button>
         </div>
@@ -18,8 +13,8 @@
         <div class="p-2 border text-light" style="width:50px">SNo</div>
         <div class="p-2 border border-left-0 text-light" style="width:150px">State</div>
         <div class="p-2 flex-grow-1 border border-left-0 text-light">
-            City <span class="badge badge-light">@lst.Count()</span>
-            <button class="btn btn-light text-info float-right btn-sm" onclick="@NewCity">
+            City <span class="badge badge-light">@repCity.ToList.Count()</span>
+            <button class="btn btn-light text-info float-right btn-sm" onclick="@repCity.NewForm">
                 <span class="oi oi-plus " aria-hidden="true"></span> NEW
             </button>
         </div>
@@ -27,62 +22,64 @@
     <div style="height:250px;overflow:auto" class="border">
         @{
 
-            foreach (var d in lst)
+            int i = 1;
+
+            foreach (var d in repCity.ToList)
             {
-                <div class="d-flex @( i%2==0? "bg-light" : "")">
-                    <div class="p-2 border text-right" style="width:50px">@(i++)</div>
-                    <div class="p-2 border border-left-0" style="width:150px">@d.State.Name</div>
-                    <div class="p-2 flex-grow-1 border border-left-0">
-                        @d.Name
+            <div class="d-flex @( i%2==0? "bg-light" : "")">
+                <div class="p-2 border text-right" style="width:50px">@(i++)</div>
+                <div class="p-2 border border-left-0" style="width:150px">@d.State.Name</div>
+                <div class="p-2 flex-grow-1 border border-left-0">
+                    @d.Name
 
-                        <button class="btn btn-danger text-light mr-1 float-right btn-sm" onclick="@(x=> DeleteCity(d))">
-                            <i class="material-icons">delete</i>
-                        </button>
+                    <button class="btn btn-danger text-light mr-1 float-right btn-sm" onclick="@(x=> repCity.DeleteForm(d))">
+                        <i class="material-icons">delete</i>
+                    </button>
 
-                        <button class="btn btn-info text-light mr-1 float-right btn-sm" onclick="@( x=> EditCity(d) )">
-                            <i class="material-icons">edit</i>
-                        </button>
+                    <button class="btn btn-info text-light mr-1 float-right btn-sm" onclick="@( x=> repCity.EditForm(d) )">
+                        <i class="material-icons">edit</i>
+                    </button>
 
-                    </div>
                 </div>
+            </div>
             }
         }
     </div>
 </div>
-<MsgBox MsgData="@messageBox" />
+<MsgBox MsgData="@repCity.MsgData" />
 
-<Modal IsShow="@IsShowCityForm">
+<Modal IsShow="@repCity.IsShowForm">
 
     <ModalHeader>
-        @TitleCityForm
+        @repCity.FormTile
     </ModalHeader>
 
     <ModalBody>
-        <div class="form-group @(!City.IsValidName(data)? "text-danger" : "text-success")">
+        <div class="form-group @(!repCity.IsValidName(repCity.data)? "text-danger" : "text-success")">
             <label for="Name">Name : </label>
-            <input type="text" class="form-control @(!City.IsValidName(data)? "border-danger" : "border-success")" id="Name" bind="@data.Name" />
+            <input type="text" class="form-control @(!repCity.IsValidName(repCity.data)? "border-danger" : "border-success")" id="Name" bind="@repCity.data.Name" />
             <span class="help-block">
-                @if (string.IsNullOrWhiteSpace(data.Name))
+                @if (string.IsNullOrWhiteSpace(repCity.data.Name))
                 {
                     <b>Reuired</b>
                 }
-                else if (City.ExistName(data))
+                else if (repCity.ExistName(repCity.data))
                 {
                     <b>Already Exist</b>
                 }
             </span>
         </div>
 
-        <div class="form-group @(data.StateId==0 ? "text-danger" : "text-success")">
+        <div class="form-group @(repCity.data.StateId==0 ? "text-danger" : "text-success")">
             <label for="State">State : </label>
             <SelectState />
-            <input list="lstState" id="State" bind="@StateName" class="form-control  @(  data.StateId == 0 ? "border-danger" : "border-success")" type="text" />
+            <input list="lstState" id="State" bind="@repCity.StateName" class="form-control  @(  repCity.data.StateId == 0 ? "border-danger" : "border-success")" type="text" />
             <span class="help-block">               
-                @if (string.IsNullOrWhiteSpace(StateName))
+                @if (string.IsNullOrWhiteSpace(repCity.StateName))
                 {
                     <b>Reuired</b>
                 }
-                else if(data.StateId==0)
+                else if(repCity.data.StateId==0)
                 {
                     <b>Enter Valid State</b>
                 }
@@ -92,125 +89,16 @@
     </ModalBody>
 
     <ModalFooter>
-        <button class="btn btn-success" style="width: 100px" onclick="@SaveCity">Save</button>
-        <button class="btn btn-secondary" style="width: 100px" onclick="@CacenlCountry">Cancel</button>
+        <button class="btn btn-success" style="width: 100px" onclick="@repCity.SaveForm">Save</button>
+        <button class="btn btn-secondary" style="width: 100px" onclick="@repCity.CancelForm">Cancel</button>
     </ModalFooter>
 
 </Modal>
 
 
 @functions{
-    public MessageBox messageBox { get; set; } = new MessageBox();
     protected override void OnInit()
     {
-        messageBox.OnChange += StateHasChanged;
-
-    }
-
-    public string SearchText { get; set; } = "";
-    public bool IsShowCityForm { get; set; } = false;
-    public string TitleCityForm { get; set; } = "City";
-    public DAL.City data { get; set; } = new DAL.City();
-
-    private string stateName;
-
-    public string StateName
-    {
-        get { return stateName; }
-        set
-        {
-            if (StateName != value)
-            {
-                stateName = value;
-                if (string.IsNullOrWhiteSpace(StateName))
-                {
-                    data.StateId = 0;
-                }
-                else
-                {
-                    data.StateId = StateRepository.IdByName(StateName);
-                }
-                StateHasChanged();
-            }
-        }
-    }
-
-
-    void ShowCityForm()
-    {
-        IsShowCityForm = true;
-        StateHasChanged();
-    }
-    void HideCityForm()
-    {
-        IsShowCityForm = false;
-        StateHasChanged();
-    }
-
-    void NewCity()
-    {
-        data = new DAL.City();
-        StateName = "";
-        ShowCityForm();
-    }
-    void EditCity(DAL.City d)
-    {
-        data = d;
-        StateName = d.State.Name;
-        ShowCityForm();
-    }
-    void SaveCity()
-    {
-        HideCityForm();
-        if (data.Id == 0)
-        {
-            if (City.Create(data))
-            {
-                messageBox.ShowMessage(TitleCityForm, "Created");
-            }
-            else
-            {
-                messageBox.ShowMessage(TitleCityForm, "Not Created");
-            }
-        }
-        else
-        {
-            if (City.Update(data))
-            {
-                messageBox.ShowMessage(TitleCityForm, "Updated");
-            }
-            else
-            {
-                messageBox.ShowMessage(TitleCityForm, "Not Updated");
-            }
-        }
-    }
-    void DeleteCity(DAL.City d)
-    {
-        if (!City.CanDelete(d))
-        {
-            messageBox.ShowMessage(TitleCityForm, $"{d.Name} can not Delete. It used to Member");
-        }
-        else
-        {
-            messageBox.ShowMessage(TitleCityForm, $"Are you delete the {d.Name} from City?", () =>
-            {
-                messageBox.HideMessage();
-                if (City.Delete(d))
-                {
-                    messageBox.ShowMessage(TitleCityForm, $"{d.Name} is Deleted");
-                }
-                else
-                {
-                    messageBox.ShowMessage(TitleCityForm, $"{d.Name} is not Deleted");
-                }
-                return true;
-            });
-        }
-    }
-    void CacenlCountry()
-    {
-        if (data.Id != 0) City.Reload(data);
-        HideCityForm();
-    }
+        repCity.OnChange += StateHasChanged;
+    }    
 }
