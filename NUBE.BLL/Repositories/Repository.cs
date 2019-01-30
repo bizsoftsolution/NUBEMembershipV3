@@ -109,6 +109,22 @@ namespace NUBE.BLL.Repositories
             return _context.Set<T>().Any();
         }
 
+
+        public virtual int IdByCode(string Code)
+        {
+            return 0;
+        }
+
+        public virtual bool IsValidCode(T entity)
+        {
+            return false;
+        }
+
+        public virtual bool ExistCode(T entity)
+        {
+            return false;
+        }
+
         public virtual int IdByName(string name)
         {
             return 0;

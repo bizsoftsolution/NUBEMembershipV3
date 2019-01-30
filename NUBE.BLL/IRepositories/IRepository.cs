@@ -18,6 +18,12 @@ namespace NUBE.BLL.IRepositories
         void Reload(T entity);
         bool IsValid(T entity);
         bool CanDelete(T entity);
+
+        int IdByCode(string Code);
+        bool IsValidCode(T entity);
+        bool ExistCode(T entity);
+
+
         int IdByName(string name);
         bool IsValidName(T entity);
         bool ExistName(T entity);
