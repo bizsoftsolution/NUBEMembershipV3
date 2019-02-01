@@ -1,0 +1,8 @@
+﻿@inject IOrganisationBranchDetailRepository OrganisationBranchDetailRepository;
+
+<datalist id="lstOrganisationBranch">
+    @foreach (var c in OrganisationBranchDetailRepository.GetAll())
+    {
+        <option value="@c.Name" />
+    }
+</datalist>

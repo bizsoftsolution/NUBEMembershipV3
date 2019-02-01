@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace NUBE.DAL
 {
-    public class Bank
+    public class MemberType
     {
         public int Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-
-        public List<BankBranch> BankBranches { get; set; }
+        public string Type { get; set; }
     }
 }

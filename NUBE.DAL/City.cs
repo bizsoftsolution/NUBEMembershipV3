@@ -13,5 +13,6 @@ namespace NUBE.DAL
         public int StateId { get; set; }
         public State State { get; set; }
         public List<OrganisationDetail> OrganisationDetails { get; set; }
+        public List<BankBranch> BankBranches { get; set; }
     }
 }

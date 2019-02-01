@@ -18,7 +18,10 @@ namespace NUBE.DAL
         public DbSet<City> Cities { get; set; }
         public DbSet<PersonTitle> PersonTitles { get; set; }
         public DbSet<OrganisationDetail> OrganisationDetails { get; set; }
-        public DbSet<OrganisationBranchDetail> organisationBranchDetails { get; set; }
+        public DbSet<OrganisationBranchDetail> OrganisationBranchDetails { get; set; }
         public DbSet<Bank> Banks { get; set; }
+        public DbSet<BankBranch> BankBranches { get; set; }
+        public DbSet<MemberType> MemberTypes { get; set; }
+
     }
 }

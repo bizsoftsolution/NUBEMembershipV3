@@ -1,0 +1,15 @@
+﻿@inject IBankRepository BankRepository;
+
+<datalist id="lstBankCode">
+    @foreach (var c in BankRepository.GetAll())
+    {
+        <option value="@c.Code" />
+    }
+</datalist>
+
+<datalist id="lstBankName">
+    @foreach (var c in BankRepository.GetAll())
+    {
+        <option value="@c.Name" />
+    }
+</datalist>

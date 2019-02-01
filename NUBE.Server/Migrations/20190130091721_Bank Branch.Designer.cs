@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NUBE.DAL;
 
 namespace NUBE.Server.Migrations
 {
     [DbContext(typeof(NUBEMembershipDBContext))]
-    partial class NUBEMembershipDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190130091721_Bank Branch")]
+    partial class BankBranch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,19 +104,6 @@ namespace NUBE.Server.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("NUBE.DAL.MemberType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Type");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MemberTypes");
-                });
-
             modelBuilder.Entity("NUBE.DAL.OrganisationBranchDetail", b =>
                 {
                     b.Property<int>("Id")
@@ -125,7 +114,7 @@ namespace NUBE.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrganisationBranchDetails");
+                    b.ToTable("organisationBranchDetails");
                 });
 
             modelBuilder.Entity("NUBE.DAL.OrganisationDetail", b =>

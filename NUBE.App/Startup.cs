@@ -23,6 +23,7 @@ namespace NUBE.App
             services.AddTransient<IOrganisationDetailRepository, OrganisationDetailRepository>();
             services.AddTransient<IOrganisationBranchDetailRepository, OrganisationBranchDetailRepository>();
             services.AddTransient<IBankRepository, BankRepository>();
+            services.AddTransient<IBankBranchRepository, BankBranchRepository>();
         }
 
         public void Configure(IBlazorApplicationBuilder app)

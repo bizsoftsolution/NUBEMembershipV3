@@ -43,7 +43,7 @@ namespace NUBE.BLL.Repositories
         }
         public override bool IsValid(OrganisationDetail data)
         {
-            return IsValidName(data);
+            return IsValidName(data) && data.CityId>0;
         }
         public override bool CanDelete(OrganisationDetail data)
         {
