@@ -11,6 +11,10 @@ namespace NUBE.DAL
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            
+        }
 
         public DbSet<Relationship> Relationships { get; set; }
         public DbSet<Country> Countries { get; set; }
@@ -21,7 +25,10 @@ namespace NUBE.DAL
         public DbSet<OrganisationBranchDetail> OrganisationBranchDetails { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<BankBranch> BankBranches { get; set; }
-        public DbSet<MemberType> MemberTypes { get; set; }
-
+        public DbSet<ENumType> ENumTypes { get; set; }
+        public DbSet<ENumData> ENumDatas { get; set; }
+        public DbSet<Member> Members { get; set; }  
+        public DbSet<MemberNominee> MemberNominees { get; set; }
+        public DbSet<MemberGuardian> MemberGuardians { get; set; }
     }
 }

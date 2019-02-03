@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NUBE.DAL;
 
 namespace NUBE.Server.Migrations
 {
     [DbContext(typeof(NUBEMembershipDBContext))]
-    partial class NUBEMembershipDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190202085224_MemberNominee update03")]
+    partial class MemberNomineeupdate03
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,48 +206,6 @@ namespace NUBE.Server.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("NUBE.DAL.MemberGuardian", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address");
-
-                    b.Property<int>("CityId");
-
-                    b.Property<DateTime>("DOB");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
-
-                    b.Property<int>("MemberId");
-
-                    b.Property<string>("MobileNo");
-
-                    b.Property<string>("NRIC_N");
-
-                    b.Property<string>("NRIC_O");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("PhoneNo");
-
-                    b.Property<string>("PostalCode");
-
-                    b.Property<int>("RelationshipId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId")
-                        .IsUnique();
-
-                    b.HasIndex("RelationshipId");
-
-                    b.ToTable("MemberGuardians");
-                });
-
             modelBuilder.Entity("NUBE.DAL.MemberNominee", b =>
                 {
                     b.Property<int>("Id")
@@ -278,7 +238,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<int?>("RelationshipId");
 
-                    b.Property<int>("RelatoinshipId");
+                    b.Property<int>("RelatonshipId");
 
                     b.HasKey("Id");
 
@@ -407,19 +367,6 @@ namespace NUBE.Server.Migrations
                     b.HasOne("NUBE.DAL.City", "City")
                         .WithMany("Members")
                         .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("NUBE.DAL.MemberGuardian", b =>
-                {
-                    b.HasOne("NUBE.DAL.Member", "Member")
-                        .WithOne("MemberGuardian")
-                        .HasForeignKey("NUBE.DAL.MemberGuardian", "MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("NUBE.DAL.Relationship", "Relationship")
-                        .WithMany("MemberGuardians")
-                        .HasForeignKey("RelationshipId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

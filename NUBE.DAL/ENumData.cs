@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 
 namespace NUBE.DAL
 {
-    public class Relationship
+    public class ENumData
     {
         public int Id { get; set; }
+        public int ENumTypeId { get; set; }
+        public ENumType ENumType { get; set; }
         public string Name { get; set; }
-
-        public List<MemberNominee> MemberNominees { get; set; }
-        public List<MemberGuardian> MemberGuardians { get; set; }
-
+        public string Value { get; set; }
     }
 }
