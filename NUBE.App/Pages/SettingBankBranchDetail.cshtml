@@ -28,8 +28,8 @@
             {
         <div class="d-flex @( i%2==0? "bg-light" : "")">
             <div class="p-2 border text-right" style="width:50px">@(i++)</div>
-            <div class="p-2 border border-left-0" style="width:150px">@d.OrganisationBranchDetail.Name </div>
-            <div class="p-2 border border-left-0" style="width:150px">@d.Bank.Name</div>
+            <div class="p-2 border border-left-0" style="width:150px">@d.OrganisationBranchDetail?.Name </div>
+            <div class="p-2 border border-left-0" style="width:150px">@d.Bank.Code</div>
             <div class="p-2 border border-left-0" style="width:150px">@d.Code</div>
             <div class="p-2 flex-grow-1 border border-left-0">
                 @d.Name

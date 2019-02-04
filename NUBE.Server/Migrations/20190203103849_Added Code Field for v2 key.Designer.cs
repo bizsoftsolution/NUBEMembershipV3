@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NUBE.DAL;
 
 namespace NUBE.Server.Migrations
 {
     [DbContext(typeof(NUBEMembershipDBContext))]
-    partial class NUBEMembershipDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190203103849_Added Code Field for v2 key")]
+    partial class AddedCodeFieldforv2key
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +32,6 @@ namespace NUBE.Server.Migrations
                     b.Property<string>("Code");
 
                     b.Property<string>("Name");
-
-                    b.Property<bool>("isDeleted");
 
                     b.HasKey("Id");
 
@@ -60,17 +60,13 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<int?>("OrganisationBranchDetailId");
+                    b.Property<int>("OrganisationBranchDetailId");
 
                     b.Property<string>("PostalCode");
 
                     b.Property<string>("PrimaryPhoneNo");
 
                     b.Property<string>("SecondaryPhoneNo");
-
-                    b.Property<bool>("isDeleted");
-
-                    b.Property<bool>("isMerged");
 
                     b.HasKey("Id");
 
@@ -94,8 +90,6 @@ namespace NUBE.Server.Migrations
                     b.Property<string>("Name");
 
                     b.Property<int>("StateId");
-
-                    b.Property<bool>("isDeleted");
 
                     b.HasKey("Id");
 
@@ -157,15 +151,13 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<int?>("CityId");
+                    b.Property<int>("CityId");
 
                     b.Property<DateTime>("DOB");
 
                     b.Property<DateTime>("DOE");
 
                     b.Property<DateTime>("DOJ");
-
-                    b.Property<DateTime>("DOL");
 
                     b.Property<string>("EMailId");
 
@@ -222,80 +214,6 @@ namespace NUBE.Server.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Members");
-                });
-
-            modelBuilder.Entity("NUBE.DAL.MemberFundDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<decimal>("AI");
-
-                    b.Property<decimal>("AccBenefit");
-
-                    b.Property<decimal>("BFAcc");
-
-                    b.Property<decimal>("BFDue");
-
-                    b.Property<decimal>("BFMonthly");
-
-                    b.Property<decimal>("BFPaid");
-
-                    b.Property<decimal>("BFYtd");
-
-                    b.Property<decimal>("BadgeAmt");
-
-                    b.Property<decimal>("BuildingFund");
-
-                    b.Property<decimal>("EntranceFee");
-
-                    b.Property<decimal>("GE");
-
-                    b.Property<decimal>("InsAcc");
-
-                    b.Property<decimal>("InsDue");
-
-                    b.Property<decimal>("InsMonthly");
-
-                    b.Property<decimal>("InsPaid");
-
-                    b.Property<decimal>("InsYtd");
-
-                    b.Property<int>("MemberId");
-
-                    b.Property<decimal>("ServicePeriod");
-
-                    b.Property<decimal>("SubsAcc");
-
-                    b.Property<decimal>("SubsDue");
-
-                    b.Property<decimal>("SubsMonthly");
-
-                    b.Property<decimal>("SubsPaid");
-
-                    b.Property<decimal>("SubsYtd");
-
-                    b.Property<decimal>("TDF");
-
-                    b.Property<decimal>("TakafulPaidMonths");
-
-                    b.Property<decimal>("UCAcc");
-
-                    b.Property<decimal>("UCDue");
-
-                    b.Property<decimal>("UCMonthly");
-
-                    b.Property<decimal>("UCPaid");
-
-                    b.Property<decimal>("UCYtd");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberId")
-                        .IsUnique();
-
-                    b.ToTable("MemberFundDetail");
                 });
 
             modelBuilder.Entity("NUBE.DAL.MemberGuardian", b =>
@@ -389,11 +307,7 @@ namespace NUBE.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BranchCode");
-
                     b.Property<string>("Name");
-
-                    b.Property<bool>("isDeleted");
 
                     b.HasKey("Id");
 
@@ -459,10 +373,6 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("StateCode");
-
-                    b.Property<bool>("isDeleted");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
@@ -483,7 +393,8 @@ namespace NUBE.Server.Migrations
 
                     b.HasOne("NUBE.DAL.OrganisationBranchDetail", "OrganisationBranchDetail")
                         .WithMany("BankBranches")
-                        .HasForeignKey("OrganisationBranchDetailId");
+                        .HasForeignKey("OrganisationBranchDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("NUBE.DAL.City", b =>
@@ -506,14 +417,7 @@ namespace NUBE.Server.Migrations
                 {
                     b.HasOne("NUBE.DAL.City", "City")
                         .WithMany("Members")
-                        .HasForeignKey("CityId");
-                });
-
-            modelBuilder.Entity("NUBE.DAL.MemberFundDetail", b =>
-                {
-                    b.HasOne("NUBE.DAL.Member", "Member")
-                        .WithOne("MemberFundDetail")
-                        .HasForeignKey("NUBE.DAL.MemberFundDetail", "MemberId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

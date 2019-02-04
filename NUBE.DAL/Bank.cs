@@ -11,6 +11,9 @@ namespace NUBE.DAL
         public string Code { get; set; }
         public string Name { get; set; }
 
+        public string BankCode { get; set; }
+        public bool isDeleted { get; set; }
+
         public List<BankBranch> BankBranches { get; set; }
     }
 }

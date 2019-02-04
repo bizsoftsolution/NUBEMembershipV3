@@ -10,6 +10,9 @@ namespace NUBE.DAL
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public String BranchCode { get; set; }
+        public bool isDeleted { get; set; }
+
         public List<BankBranch> BankBranches { get; set; }
     }
 }
