@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NUBE.DAL;
 
 namespace NUBE.Server.Migrations
 {
     [DbContext(typeof(NUBEMembershipDBContext))]
-    partial class NUBEMembershipDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190204100149_Person title nullable")]
+    partial class Persontitlenullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,23 +159,15 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<string>("BFNo");
-
-                    b.Property<int>("BankBranchId");
-
-                    b.Property<string>("BankCode_ByBank");
-
-                    b.Property<string>("BranchMemberCode");
-
                     b.Property<int?>("CityId");
 
-                    b.Property<DateTime?>("DOB");
+                    b.Property<DateTime>("DOB");
 
-                    b.Property<DateTime?>("DOE");
+                    b.Property<DateTime>("DOE");
 
-                    b.Property<DateTime?>("DOJ");
+                    b.Property<DateTime>("DOJ");
 
-                    b.Property<DateTime?>("DOL");
+                    b.Property<DateTime>("DOL");
 
                     b.Property<string>("EMailId");
 
@@ -187,17 +181,9 @@ namespace NUBE.Server.Migrations
 
                     b.Property<decimal>("LevyAmount");
 
-                    b.Property<DateTime?>("LevyPayDate");
-
-                    b.Property<string>("MembeerStatus")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
-
                     b.Property<string>("MemberCode");
 
                     b.Property<string>("MemberName");
-
-                    b.Property<string>("MemberName_ByBank");
 
                     b.Property<string>("MemberNo");
 
@@ -206,8 +192,6 @@ namespace NUBE.Server.Migrations
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
 
                     b.Property<string>("MobileNo");
-
-                    b.Property<string>("NRIC_ByBank");
 
                     b.Property<string>("NRIC_N");
 
@@ -235,15 +219,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<decimal>("TDFAmount");
 
-                    b.Property<DateTime?>("TDFPayDate");
-
-                    b.Property<int>("TotalMonthDue");
-
-                    b.Property<int>("TotalMonthPaid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("BankBranchId");
 
                     b.HasIndex("CityId");
 
@@ -258,9 +234,7 @@ namespace NUBE.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("AI_Insurance");
-
-                    b.Property<string>("AI_InsuranceNo");
+                    b.Property<decimal>("AI");
 
                     b.Property<decimal>("AccBenefit");
 
@@ -280,11 +254,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<decimal>("EntranceFee");
 
-                    b.Property<string>("GE_ContractNo");
-
-                    b.Property<bool>("GE_Insurance");
-
-                    b.Property<decimal>("HQFee");
+                    b.Property<decimal>("GE");
 
                     b.Property<decimal>("InsAcc");
 
@@ -297,8 +267,6 @@ namespace NUBE.Server.Migrations
                     b.Property<decimal>("InsYtd");
 
                     b.Property<int>("MemberId");
-
-                    b.Property<decimal>("RegistrationFee");
 
                     b.Property<decimal>("ServicePeriod");
 
@@ -540,11 +508,6 @@ namespace NUBE.Server.Migrations
 
             modelBuilder.Entity("NUBE.DAL.Member", b =>
                 {
-                    b.HasOne("NUBE.DAL.BankBranch", "BankBranch")
-                        .WithMany("Members")
-                        .HasForeignKey("BankBranchId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("NUBE.DAL.City", "City")
                         .WithMany("Members")
                         .HasForeignKey("CityId");

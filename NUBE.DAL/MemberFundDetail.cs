@@ -8,7 +8,9 @@ namespace NUBE.DAL
     public class MemberFundDetail
     {
         public int Id { get; set; }
-        public Decimal EntranceFee { get; set; }        
+        public Decimal HQFee { get; set; }
+        public Decimal EntranceFee { get; set; }
+        public decimal RegistrationFee { get; set; }
         public Decimal BuildingFund { get; set; }
         public Decimal AccBenefit { get; set; }
         public Decimal BadgeAmt { get; set; }
@@ -33,8 +35,10 @@ namespace NUBE.DAL
         public Decimal InsAcc { get; set; }
         public Decimal InsPaid { get; set; }
         public Decimal InsDue { get; set; }
-        public Decimal GE { get; set; }
-        public Decimal AI { get; set; }
+        public bool GE_Insurance { get; set; }
+        public bool AI_Insurance { get; set; }
+        public string AI_InsuranceNo { get; set; }
+        public string GE_ContractNo { get; set; }
         public Decimal TakafulPaidMonths { get; set; }
         public Decimal TDF { get; set; }
 

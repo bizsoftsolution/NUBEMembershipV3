@@ -26,5 +26,7 @@ namespace NUBE.DAL
         public string BankBranchCode { get; set; }
         public bool isDeleted { get; set; }
         public bool isMerged { get; set; }
+
+        public List<Member> Members { get; set; }
     }
 }
