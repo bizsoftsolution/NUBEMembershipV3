@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NUBE.DAL;
 
 namespace NUBE.Server.Migrations
 {
     [DbContext(typeof(NUBEMembershipDBContext))]
-    partial class NUBEMembershipDBContextModelSnapshot : ModelSnapshot
+    [Migration("20190206052847_Member nominee Relationship id Specll Correct")]
+    partial class MembernomineeRelationshipidSpecllCorrect
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -342,7 +344,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<int?>("CityId");
+                    b.Property<int>("CityId");
 
                     b.Property<DateTime>("DOB");
 
@@ -364,7 +366,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("PostalCode");
 
-                    b.Property<int?>("RelationshipId");
+                    b.Property<int>("RelationshipId");
 
                     b.HasKey("Id");
 
@@ -384,7 +386,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<int?>("CityId");
+                    b.Property<int>("CityId");
 
                     b.Property<DateTime>("DOB");
 
@@ -406,7 +408,7 @@ namespace NUBE.Server.Migrations
 
                     b.Property<string>("PostalCode");
 
-                    b.Property<int?>("RelationshipId");
+                    b.Property<int>("RelationshipId");
 
                     b.HasKey("Id");
 
@@ -569,7 +571,8 @@ namespace NUBE.Server.Migrations
 
                     b.HasOne("NUBE.DAL.Relationship", "Relationship")
                         .WithMany("MemberGuardians")
-                        .HasForeignKey("RelationshipId");
+                        .HasForeignKey("RelationshipId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("NUBE.DAL.MemberNominee", b =>
@@ -581,7 +584,8 @@ namespace NUBE.Server.Migrations
 
                     b.HasOne("NUBE.DAL.Relationship", "Relationship")
                         .WithMany("MemberNominees")
-                        .HasForeignKey("RelationshipId");
+                        .HasForeignKey("RelationshipId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("NUBE.DAL.OrganisationDetail", b =>

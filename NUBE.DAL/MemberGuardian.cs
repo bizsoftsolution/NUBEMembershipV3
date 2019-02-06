@@ -17,12 +17,12 @@ namespace NUBE.DAL
         public string PostalCode { get; set; }
         public string PhoneNo { get; set; }
         public string MobileNo { get; set; }
-        public int CityId { get; set; }
+        public int? CityId { get; set; }
 
         public int MemberId { get; set; }
         public Member Member { get; set; }
 
-        public int RelationshipId { get; set; }
+        public int? RelationshipId { get; set; }
         public Relationship Relationship { get; set; }
     }
 }
